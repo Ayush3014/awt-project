@@ -4,7 +4,7 @@ const Category = require('../models/Category');
 const { uploadImageToCloudinary } = require('../utils/imageUploader');
 
 // createCourse handler function
-exports.createCourse = async (req, res) => {
+const createCourse = async (req, res) => {
   try {
     // get data
     const { courseName, courseDescription, whatYouWillLearn, price, category } =
@@ -104,7 +104,7 @@ exports.createCourse = async (req, res) => {
 };
 
 // getAllCourses handler function
-exports.showAllCourses = async (req, res) => {
+const showAllCourses = async (req, res) => {
   try {
     const allCourses = await Course.find({});
     return res.status(200).json({
@@ -118,4 +118,9 @@ exports.showAllCourses = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+module.exports = {
+  createCourse,
+  showAllCourses,
 };

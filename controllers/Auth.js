@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 // sendOTP
-exports.sendOTP = async (req, res) => {
+const sendOTP = async (req, res) => {
   try {
     // extract email from req body
     const { email } = req.body;
@@ -65,7 +65,7 @@ exports.sendOTP = async (req, res) => {
 };
 
 // signUp
-exports.signUp = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const {
       firstName,
@@ -162,7 +162,7 @@ exports.signUp = async (req, res) => {
 };
 
 // login
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   try {
     // get data from req body
     const { email, password } = req.body;
@@ -227,7 +227,7 @@ exports.login = async (req, res) => {
 };
 
 // changePassword
-exports.changePassword = async (req, res) => {
+const changePassword = async (req, res) => {
   try {
     // get data from req body
     const { id } = req.user;
@@ -294,4 +294,11 @@ exports.changePassword = async (req, res) => {
       message: 'Password change failed. Please try again.',
     });
   }
+};
+
+module.exports = {
+  sendOTP,
+  signUp,
+  login,
+  changePassword,
 };

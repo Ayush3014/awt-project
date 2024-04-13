@@ -1,7 +1,7 @@
 const Section = require('../models/Section');
 const Course = require('../models/Course');
 
-exports.createSection = async (req, res) => {
+const createSection = async (req, res) => {
   try {
     // data fetch
     const { sectionName, courseId } = req.body;
@@ -49,7 +49,7 @@ exports.createSection = async (req, res) => {
   }
 };
 
-exports.updateSection = async (req, res) => {
+const updateSection = async (req, res) => {
   try {
     // data input
     const { sectionName, sectionId } = req.body;
@@ -84,7 +84,7 @@ exports.updateSection = async (req, res) => {
   }
 };
 
-exports.deleteSection = async (req, res) => {
+const deleteSection = async (req, res) => {
   try {
     const { sectionId, courseId } = req.body;
 
@@ -121,4 +121,10 @@ exports.deleteSection = async (req, res) => {
       err,
     });
   }
+};
+
+module.exports = {
+  createSection,
+  updateSection,
+  deleteSection,
 };

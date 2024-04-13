@@ -3,7 +3,7 @@ const mailSender = require('../utils/mailSender');
 const bcrypt = require('bcrypt');
 
 // resetPasswordToken
-exports.resetPasswordToken = async (req, res) => {
+const resetPasswordToken = async (req, res) => {
   try {
     // get email from req body
     const email = req.body.email;
@@ -55,7 +55,7 @@ exports.resetPasswordToken = async (req, res) => {
 };
 
 // resetPassword
-exports.resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   try {
     // data fetch
     const { password, confirmPassword, token } = req.body;
@@ -107,4 +107,9 @@ exports.resetPassword = async (req, res) => {
         'Something went wrong while resetting the password. Please try again',
     });
   }
+};
+
+module.exports = {
+  resetPasswordToken,
+  resetPassword,
 };

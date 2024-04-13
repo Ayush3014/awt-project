@@ -3,7 +3,7 @@ require('dotenv').config();
 const user = require('../models/User');
 
 // auth
-exports.auth = async (req, res, next) => {
+const auth = async (req, res, next) => {
   try {
     // extract token
     const token =
@@ -42,7 +42,7 @@ exports.auth = async (req, res, next) => {
 };
 
 // isStudent
-exports.isStudent = async (req, res, next) => {
+const isStudent = async (req, res, next) => {
   try {
     if (req.user.accountType !== 'Student') {
       return res.status(401).json({
@@ -61,7 +61,7 @@ exports.isStudent = async (req, res, next) => {
 };
 
 // isInstructor
-exports.isInstructor = async (req, res, next) => {
+const isInstructor = async (req, res, next) => {
   try {
     if (req.user.accountType !== 'Instructor') {
       return res.status(401).json({
@@ -80,7 +80,7 @@ exports.isInstructor = async (req, res, next) => {
 };
 
 // isAdmin
-exports.isAdmin = async (req, res, next) => {
+const isAdmin = async (req, res, next) => {
   try {
     if (req.user.accountType !== 'Admin') {
       return res.status(401).json({
@@ -96,4 +96,11 @@ exports.isAdmin = async (req, res, next) => {
       message: 'User role cannot be verified. Please try again.',
     });
   }
+};
+
+module.exports = {
+  auth,
+  isStudent,
+  isInstructor,
+  isAdmin,
 };

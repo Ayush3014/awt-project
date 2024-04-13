@@ -1,6 +1,6 @@
 const Category = require('../models/Category');
 
-exports.createCategory = async (req, res) => {
+const createCategory = async (req, res) => {
   try {
     // get the data
     const { name, description } = req.body;
@@ -33,7 +33,7 @@ exports.createCategory = async (req, res) => {
 };
 
 // get all categories
-exports.showAllCategories = async (req, res) => {
+const showAllCategories = async (req, res) => {
   try {
     const allCategories = await Category.find(
       {},
@@ -50,4 +50,9 @@ exports.showAllCategories = async (req, res) => {
       message: err.message,
     });
   }
+};
+
+module.exports = {
+  createCategory,
+  showAllCategories,
 };
