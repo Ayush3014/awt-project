@@ -228,10 +228,70 @@ exports.login = async (req, res) => {
 
 // changePassword
 exports.changePassword = async (req, res) => {
-  // get data from req body
-  // get oldpwd, newpwd, confirmNewPwd
-  // validation
-  // update pwd in DB
-  // send mail - pwd updated
-  // return response
+  try {
+    // get data from req body
+    const { id } = req.user;
+
+    // get oldpwd, newpwd, confirmNewPwd
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+    const user = await User.findById(id);
+
+    // validation
+    if (oldPassword !== user.password) {
+      return res.status(400).json({
+        success: false,
+        message: "Existing Password doesn't match",
+      });
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'The passwords do not match. Please try again',
+      });
+    }
+
+    if (oldPassword === newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'The old and the new passwords cannot be the same.',
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // update pwd in DB
+    const updatedDetails = await User.findByIdAndUpdate(
+      id,
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    // send mail - pwd updated
+    try {
+      const emailResponse = await mailSender(
+        updatedDetails.email,
+        'Password Updated successfully!',
+        'Password updated successfully'
+      );
+      console.log('Email sent successfully: ', emailResponse);
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        message: 'Error occurred while sending email',
+        err,
+      });
+    }
+
+    // return response
+    return res.json({
+      success: true,
+      message: 'Password updated successfully',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Password change failed. Please try again.',
+    });
+  }
 };
