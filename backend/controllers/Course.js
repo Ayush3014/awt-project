@@ -104,7 +104,7 @@ const createCourse = async (req, res) => {
 };
 
 // getAllCourses handler function
-const showAllCourses = async (req, res) => {
+const getAllCourses = async (req, res) => {
   try {
     const allCourses = await Course.find({});
     return res.status(200).json({
@@ -120,7 +120,60 @@ const showAllCourses = async (req, res) => {
   }
 };
 
+const getCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+
+    //validation
+    if (!courseId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing fields',
+      });
+    }
+
+    const course = await Course.findById(courseId)
+      .populate('category')
+      .populate('ratingAndReviews')
+      .populate({
+        path: 'courseContent',
+        populate: {
+          path: 'subSection',
+        },
+      })
+      .populate({
+        path: 'instructor',
+        populate: {
+          path: 'additionalDetails',
+        },
+      })
+      .exec();
+
+    //validation
+    if (!course) {
+      return res.status(400).json({
+        success: false,
+        message: 'Course not found',
+      });
+    }
+
+    //response
+    res.status(200).json({
+      success: true,
+      data: course,
+      message: 'Course details fetched successfully',
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong! , Try again',
+      err,
+    });
+  }
+};
+
 module.exports = {
   createCourse,
-  showAllCourses,
+  getAllCourses,
+  getCourseDetails,
 };
