@@ -9,6 +9,7 @@ require('dotenv').config();
 // sendOTP
 const sendOTP = async (req, res) => {
   try {
+    console.log('sendotp');
     // extract email from req body
     const { email } = req.body;
 
@@ -66,6 +67,7 @@ const sendOTP = async (req, res) => {
 
 // signUp
 const signUp = async (req, res) => {
+  console.log('signup');
   try {
     const {
       firstName,
@@ -112,13 +114,13 @@ const signUp = async (req, res) => {
     const recentOtp = await OTP.find({ email })
       .sort({ createdAt: -1 })
       .limit(1);
-    console.log(recentOtp);
+    // console.log(recentOtp);
     if (recentOtp.length == 0) {
       return res.status(400).json({
         success: false,
         message: 'OTP Not Found',
       });
-    } else if (otp !== recentOtp.otp) {
+    } else if (otp !== recentOtp[0].otp) {
       return res.status(400).json({
         success: false,
         message: 'Invalid OTP',
