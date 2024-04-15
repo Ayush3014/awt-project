@@ -52,6 +52,9 @@ const showAllCategories = async (req, res) => {
   }
 };
 
+// category page details
+// category page details sorted
+
 module.exports = {
   createCategory,
   showAllCategories,

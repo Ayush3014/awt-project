@@ -130,6 +130,9 @@ const getAllUserDetails = async (req, res) => {
   }
 };
 
+// update display picture
+// get enrolled courses
+
 module.exports = {
   updateProfile,
   deleteAccount,

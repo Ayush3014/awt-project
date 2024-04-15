@@ -161,10 +161,51 @@ const verifySignature = async (req, res) => {
   }
 };
 
-const getCourseDetails = async (req, res) => {};
+//test it , to send payment confirmation mail
+const sendPaymentConfirmation = async (req, res) => {
+  try {
+    //order details
+    const { orderId, paymentId, amount } = req.body;
+    const { id } = req.user;
+
+    //validation
+    if (!orderId || !paymentId || !amount || !id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all the fields',
+      });
+    }
+
+    //to get buyer email
+    const enrolledStudent = await User.findById(id);
+
+    //sending email
+    await mailSender(
+      enrolledStudent.email,
+      `Payment Successfull-StudyNotion`,
+      paymentSuccessEmail(
+        `${enrolledStudent.firstName}`,
+        amount / 100,
+        orderId,
+        paymentId
+      )
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Payment mail sent!',
+    });
+  } catch (err) {
+    console.log('Err in sending payment confirmation-> ', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Something went wrong , Try again',
+    });
+  }
+};
 
 module.exports = {
   capturePayment,
   verifySignature,
-  getCourseDetails,
+  sendPaymentConfirmation,
 };
